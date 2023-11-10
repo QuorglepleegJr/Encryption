@@ -1,0 +1,21 @@
+Established, listening for connection on port 60000
+Connected to by ('192.168.1.12', 39256)
+Recieved 'This Log Will Be in A File
+' from ('192.168.1.12', 39256)
+Recieved 'Closing Connection
+' from ('192.168.1.12', 39256)
+('192.168.1.12', 39256) disconnected, listening for new connection on port 60000
+Connected to by ('127.0.0.1', 48800)
+Recieved 'Hello world!' from ('127.0.0.1', 48800)
+Recieved 'Greetings, server' from ('127.0.0.1', 48800)
+Recieved 'Stop copying me' from ('127.0.0.1', 48800)
+Recieved 'Don't do that' from ('127.0.0.1', 48800)
+Recieved 'STOP!' from ('127.0.0.1', 48800)
+Recieved 'I'm leaving' from ('127.0.0.1', 48800)
+('127.0.0.1', 48800) disconnected, listening for new connection on port 60000
+Connected to by ('127.0.0.1', 38202)
+Recieved 'Hello world!' from ('127.0.0.1', 38202)
+Recieved 'Just to say I hate you' from ('127.0.0.1', 38202)
+('127.0.0.1', 38202) disconnected, listening for new connection on port 60000
+
+Shutting down server
