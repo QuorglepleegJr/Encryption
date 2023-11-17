@@ -1,20 +1,46 @@
 import socket
 
-HOST = '127.0.0.1'
-PORT = 60000
+from random import randrange
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+from DHKEA import generate_key
 
-    s.connect((HOST, PORT))
+class Client:
 
-    s.sendall(b'Hello world!')
+    def from_server(server):
 
-    data = s.recv(1024)
+        return Client(server.get_ip, server.get_port)
 
-    while data:
+    def __init__(self, HOST, PORT):
 
-        print("Received '" + data.decode("utf-8").strip() + "'")
+        self.HOST = HOST
+        self.PORT = PORT
 
-        s.sendall(bytes(input(), "utf-8"))
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        data = s.recv(1024)
+        self.s.connect((self.HOST, self.PORT))
+
+        self.confirm_handshake()
+
+    def confirm_handshake(self, timeout=2):
+
+        old_time_out = self.s.timeout
+
+        self.s.settimeout(timeout)
+    
+        self.s.sendall("Awaiting handshake")
+
+        d = self.s.recv(1024)
+
+        if d != "Handshake accepted":
+
+            raise ValueError("Server did not accept handshake")
+
+    def key_exchange(self, min = 2**31, max = 2**32):
+
+        p = randrange(min, max)
+        a = randrange(min-(max-p), p)
+
+        send_A = lambda A: self.s.sendall(" ".join("KeyData:", str(A), str(p), str(min-(max-p))))
+        get_B = lambda: int.from_bytes(self.s.recv(1024))
+
+        return generate_key(a, p, send_A, get_B)

@@ -29,3 +29,13 @@ def power_mod(A, n, p):
             total %= p
     
     return total
+
+def generate_key(a, p, get_B, send_A):
+
+    A = power_mod(2, a, p)
+
+    send_A(A)
+
+    B = get_B()
+
+    return power_mod(B, a, p)
