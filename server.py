@@ -2,7 +2,7 @@ import socket
 
 from random import randrange
 
-from DHKEA import generate_key
+from DHKEA import generate_key, power_mod
 
 class Server:
 
@@ -65,7 +65,7 @@ class Server:
 
                 a = randrange(int(min), int(p))
 
-                send_A = lambda A: connection.sendall(bytes(A))
+                send_A = lambda A: connection.send(int.to_bytes(A, 1024, 'big'))
                 get_B = lambda: int(B)
 
                 print("Key:", generate_key(a, int(p), get_B, send_A))
