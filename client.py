@@ -27,9 +27,9 @@ class Client:
 
         self.s.settimeout(timeout)
     
-        self.s.sendall("Awaiting handshake")
+        self.s.sendall("Awaiting handshake".encode("utf-8"))
 
-        d = self.s.recv(1024)
+        d = self.s.recv(1024).decode("utf-8")
 
         if d != "Handshake accepted":
 
@@ -40,7 +40,7 @@ class Client:
         p = randrange(min, max)
         a = randrange(min-(max-p), p)
 
-        send_A = lambda A: self.s.sendall(" ".join("KeyData:", str(A), str(p), str(min-(max-p))))
-        get_B = lambda: int.from_bytes(self.s.recv(1024))
+        send_A = lambda A: self.s.sendall(" ".join(["KeyData:", str(A), str(p), str(min-(max-p))]).encode("utf-8"))
+        get_B = lambda: int.from_bytes(self.s.recv(1024), byteorder="big")
 
-        return generate_key(a, p, send_A, get_B)
+        return generate_key(a, p, get_B, send_A)

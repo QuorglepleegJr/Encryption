@@ -49,20 +49,26 @@ class Server:
 
             data = data.decode("utf-8")
 
+            print("Received from", address, ":", data)
+
             if data == "Awaiting handshake":
 
-                connection.sendall("Handshake accepted")
+                print("Handshake with", address, "completed")
+
+                connection.sendall("Handshake accepted".encode("utf-8"))
 
             elif len(data) > 9 and data[:9] == "KeyData: ":
+
+                print("Processing as keydata")
                 
                 _, B, p, min = data.split(" ")
 
-                a = randrange(min, p)
+                a = randrange(int(min), int(p))
 
-                send_A = connection.sendall
-                get_B = lambda: B
+                send_A = lambda A: connection.sendall(bytes(A))
+                get_B = lambda: int(B)
 
-                print("Key:", generate_key(a, p, send_A, get_B))
+                print("Key:", generate_key(a, int(p), get_B, send_A))
             
             else:
 
